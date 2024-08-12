@@ -1,0 +1,25 @@
+services:
+
+  chatgptapi:
+    build: .
+    container_name:  chatgpt-wpapi
+    restart: unless-stopped
+    networks:
+      ocgapinetwork:
+        ipv4_address: ${GPT_CONTAINER_IP}
+    ports:
+      - "3030:3030"
+    volumes:
+      - .:/usr/src/app
+    secrets:
+      - openai_api_key
+    environment:
+      - PORT=3030
+
+secrets:
+  openai_api_key:
+    file: ${OPENAI_API_KEY_FILE}
+
+networks:
+  ocgapinetwork:
+    external: true
